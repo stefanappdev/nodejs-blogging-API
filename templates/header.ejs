@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <link type="text/css" href="/styles/output.css" rel="stylesheet"/>
+    <link type="text/css" href="/styles/index.css" rel="stylesheet"/>
+
+   
+</head>
+<body class="[background-color:#211F21] text-stone-200">    
+
+<div>
+    <header class="flex items-center justify-between bg-orange-500 h-10 w-full ">
+
+        <h1 class="text-3xl [align-self:flex-start] text-stone-200">Our Blogs</h1>
+
+
+
+        <div id="mobile-menu"
+    class=" relative mx-2 md:hidden"
+    >
+     
+        <img id="dropdown-open-btn" class="h-10 w-10" src="/images/sharp-dropdown-menu.svg"/>
+
+      
+
+
+        <style>
+            #mobile-menu-dropdown{
+                background-color:rgba(43, 43, 44, 0.86);
+                z-index: 1;
+            }
+        </style>
+
+        <div 
+        id="mobile-menu-dropdown"
+        class="hidden flex flex-col items-start justify-center
+        absolute right-4 rounded-md h-42 w-35 pl-2 text-stone-200">
+
+
+            <img id="dropdown-close-btn" class="h-5 w-5 [align-self:flex-end] mx-2 my-3
+            float-right" alt='close dropdown menu' src="/images/close.svg"/>
+
+            <nav id="mobile-menu-dropdown-navbar"
+            class=" 
+            flex flex-col items-center p-2 justify-center
+            justify-around"
+            >
+                <a 
+                class=
+                'mobile-menu-link my-2 cursor-pointer text-md font-semibold' 
+                href="/">
+                    Home
+                </a>
+
+                <a class='mobile-menu-link my-2 cursor-pointer 
+                text-md font-semibold' 
+                href="/login">
+                Login
+                </a>
+
+                <a class='mobile-menu-link my-2 cursor pointer 
+                text-md font-semibold' 
+                href="/signup">Signup
+            </a>
+            </nav>
+
+
+             <script>
+            let dropdownCloseBtn=document.querySelector("#dropdown-close-btn");
+            let dropdown=document.querySelector("#mobile-menu-dropdown");
+            let dropdownOpenBtn=document.querySelector("#dropdown-open-btn")
+
+            dropdownCloseBtn.addEventListener('click',()=>{
+                dropdown.classList.add('hidden');
+            })
+
+             dropdownOpenBtn.addEventListener('click',()=>{
+                dropdown.classList.remove('hidden');
+            })
+
+         </script>
+
+        </div>
+    </div>
+
+    <div class='hidden md:block' id="desktop-menu">
+        <nav id="desktop-menu-navbar"
+            class=" 
+            flex items-center p-2 justify-evenly
+            text-stone-200 mx-2"
+            >
+                <a 
+                class=
+                'desktop-menu-link mx-3 cursor-pointer text-xl font-semibold' 
+                href="/">
+                    Home
+                </a>
+
+                <a class='desktop-menu-link mx-3 cursor-pointer 
+                text-xl font-semibold' 
+                href="/login">
+                Login
+                </a>
+
+                <a class='desktop-menu-link mx-3 cursor pointer 
+                text-xl font-semibold' 
+                href="/signup">Signup
+            </a>
+            </nav>
+
+    </div>
+</header>

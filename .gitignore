@@ -1,2 +1,3 @@
-#tgnore node_modules
+#tgnore node_modules and site_template
 node_modules
+site_template

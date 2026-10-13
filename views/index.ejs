@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
-</head>
-<body>
-    <h1>Welcome Home</h1>
-</body>
-</html>
+<%- include('../templates/header.ejs') %>
+<div id="homepage">
+
+<img alt="homepage-background" src="/images/blogging-codepage.webp" id="homepage-background"/>
+
+</div>
+
+<style>
+    #homepage{
+        position: relative;
+        
+    }
+    #homepage-background{
+        height: 700px;
+        z-index: -99;
+        opacity: 0.50;
+     }
+
+     
+
+</style>
+
+<%- include('../templates/footer.ejs') %>
