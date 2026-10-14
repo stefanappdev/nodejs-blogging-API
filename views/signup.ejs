@@ -1,17 +1,37 @@
 <%- include('../templates/header.ejs') %>
 
-<div class="[height:700px] flex flex-col items-center justify-center" id="sign-page">
-    <h1 class="text-3xl text-center my-10">Sign into your profile</h1>
+<div class="[height:700px] flex flex-col items-center justify-center" id="signup-page">
+    <h1 class="text-3xl text-center font-extrabold my-10">Sign into your profile</h1>
 
-    <div id="signup-form" 
+    <form id="signup-form" 
     class=
-    "bg-neutral-300 
-     w-80 h-100 rounded-md
-     flex flex-col">
- 
+    "bg-neutral-300 text-neutral-900
+     w-80 h-100 rounded-md text-lg
+     flex flex-col items-center px-3  justify-center">
 
+     <label class=" h-10 font-bold" aria-labelledby="username" for="username">Username:</label>
+     <input 
+     aria-placeholder="Enter your username" 
+     placeholder="Enter your username"
+     id="username"
+     type="text"
+     class="font-semibold focus:bg-blue-100"
+     />
 
-    </div>
+    <br/>
+
+     <label class='h-10 font-bold ' aria-labelledby="password" for="password">password:</label>
+     <input 
+     aria-placeholder="Enter your password" 
+     placeholder="Enter your password"
+     id="password"
+     type="text"
+    class="font-semibold focus:bg-blue-100"
+     />
+    <br/>
+     <button class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm" type="submit">submit</button>
+
+    </form>
 </div>
 
 <%- include('../templates/footer.ejs') %>
