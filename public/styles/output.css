@@ -19,7 +19,6 @@
     --color-slate-400: oklch(70.4% 0.04 256.788);
     --color-neutral-300: oklch(87% 0 none);
     --color-neutral-900: oklch(20.5% 0 none);
-    --color-stone-100: oklch(97% 0.001 106.424);
     --color-stone-200: oklch(92.3% 0.003 48.717);
     --color-stone-700: oklch(37.4% 0.01 67.558);
     --color-stone-900: oklch(21.6% 0.006 56.043);
@@ -247,11 +246,11 @@
   .h-100 {
     height: calc(var(--spacing) * 100);
   }
+  .h-105 {
+    height: calc(var(--spacing) * 105);
+  }
   .w-5 {
     width: calc(var(--spacing) * 5);
-  }
-  .w-9 {
-    width: calc(var(--spacing) * 9);
   }
   .w-10 {
     width: calc(var(--spacing) * 10);
@@ -317,12 +316,6 @@
   .\[background-color\:\#211F21\] {
     background-color: #211F21;
   }
-  .bg-green-300 {
-    background-color: var(--color-green-300);
-  }
-  .bg-green-500 {
-    background-color: var(--color-green-500);
-  }
   .bg-green-700 {
     background-color: var(--color-green-700);
   }
@@ -335,8 +328,8 @@
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
-  .p-3 {
-    padding: calc(var(--spacing) * 3);
+  .p-4 {
+    padding: calc(var(--spacing) * 4);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -375,23 +368,11 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
-  .text-blue-900 {
-    color: var(--color-blue-900);
-  }
   .text-neutral-900 {
     color: var(--color-neutral-900);
   }
-  .text-slate-400 {
-    color: var(--color-slate-400);
-  }
   .text-stone-200 {
     color: var(--color-stone-200);
-  }
-  .text-stone-700 {
-    color: var(--color-stone-700);
-  }
-  .text-stone-900 {
-    color: var(--color-stone-900);
   }
   .underline {
     text-decoration-line: underline;
@@ -402,12 +383,6 @@
   }
   .focus\:bg-blue-100:focus {
     background-color: var(--color-blue-100);
-  }
-  .focus\:bg-sky-100:focus {
-    background-color: var(--color-sky-100);
-  }
-  .focus\:bg-sky-200:focus {
-    background-color: var(--color-sky-200);
   }
   @media (width >= 48rem) {
     .md\:block {

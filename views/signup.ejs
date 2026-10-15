@@ -6,9 +6,30 @@
     <form id="signup-form" 
     class=
     "bg-neutral-300 text-neutral-900
-     w-80 h-100 rounded-md text-lg
+     w-80 h-105 p-4 rounded-md text-lg
      flex flex-col items-center px-3  justify-center">
 
+    
+     <label class='h-10 font-bold ' aria-labelledby="firstName" for="firstName">Firstname:</label>
+     <input 
+     aria-placeholder="Enter your Firstname" 
+     placeholder="Enter your Firstname"
+     id="firstName"
+     type="text"
+    class="font-semibold focus:bg-blue-100"
+     />
+     <br/>
+
+      <label class='h-10 font-bold ' aria-labelledby="lastName" for="lastName">Lastname:</label>
+     <input 
+     aria-placeholder="Enter your lastname" 
+     placeholder="Enter your lastname"
+     id="lastName"
+     type="text"
+    class="font-semibold focus:bg-blue-100"
+     />
+     <br/>
+    
      <label class=" h-10 font-bold" aria-labelledby="username" for="username">Username:</label>
      <input 
      aria-placeholder="Enter your username" 
@@ -19,6 +40,7 @@
      />
 
     <br/>
+
 
      <label class='h-10 font-bold ' aria-labelledby="password" for="password">password:</label>
      <input 
