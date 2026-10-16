@@ -40,23 +40,16 @@ app.get("/",(request,response)=>{
     response.status(200).render('index')
 })
 
-app.get("/login",(request,response)=>{
-    response.status(200).render('login')
-})
-
-app.get("/signup",(request,response)=>{
-    response.status(200).render('signup')
-})
 
  
-app.route('/users')
+app.route('/admin/users')
 .get((request,response)=>{
     pool.getConnection((error,connection)=>{
         if(error){
             throw error
         }
 
-        connection.query("SELECT * FROM users LIMIT 10",(error,data)=>{
+        connection.query("SELECT * FROM users LIMIT 5",(error,data)=>{
 
             connection.release()
 
@@ -65,7 +58,7 @@ app.route('/users')
             }
 
             console.log(data)
-            response.status(200).render('users/users',{title:"Users",data:data})
+            response.status(200).send(data)
         })
 
     });
@@ -99,9 +92,8 @@ app.route('/users')
         connection.release()
 
         if(!error){
-            console.log(data)
            
-            response.status(200).redirect("/users")
+            response.status(200).redirect("/")
         }else{
             console.log(error)
         } })
@@ -110,20 +102,24 @@ app.route('/users')
     })
 })
 
-.put((request,response)=>{
-    response.render('users/users.ejs')
+
+
+
+app.get("/users/login",(request,response)=>{
+    response.status(200).render('login',{title:'login'})
 })
 
-.delete((request,response)=>{
-    response.render('users/users.ejs')
+app.get("/users/signup",(request,response)=>{
+    response.status(200).render('signup',{title:'signup'})
 })
 
-
-
+app.get("/users/:username",(request,response)=>{
+    response.status(200).render('users/profile',{title:request.params.username})
+})
 
 
 app.use((request,response)=>{
-      response.status(404).render('404')
+      response.status(404).render('404',{title:"404 page"})
 })
 
 

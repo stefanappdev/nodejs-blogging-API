@@ -3,17 +3,18 @@
 <div class="[height:700px] flex flex-col items-center justify-center" id="login-page">
     <h1 class="text-3xl text-center font-extrabold my-10">Login To start Blogging!</h1>
 
-    <form id="login-form" 
+    <form 
+    id="login-form" 
     class=
     "bg-neutral-300 text-neutral-900
      w-80 h-100 rounded-md text-lg
      flex flex-col items-center px-3  justify-center">
 
-     <label class=" h-10 font-bold" aria-labelledby="username" for="username">Username:</label>
+     <label class=" h-10 font-bold" aria-labelledby="email" for="email">email:</label>
      <input 
-     aria-placeholder="Enter your username" 
-     placeholder="Enter your username"
-     id="username"
+     aria-placeholder="Enter your email" 
+     placeholder="Enter your email"
+     id="email"
      type="text"
      class="font-semibold focus:bg-blue-100"
      />
@@ -25,7 +26,7 @@
      aria-placeholder="Enter your password" 
      placeholder="Enter your password"
      id="password"
-     type="text"
+     type="password"
     class="font-semibold focus:bg-blue-100"
      />
     <br/>
@@ -33,5 +34,27 @@
 
     </form>
 </div>
+
+<script>
+    function handleSubmit(event){
+        event.preventDefault();
+        const fetchUsers=async(url)=>await fetch(url);
+        try{
+            fetchUsers('http://localhost:8000/admin/users')
+            .then(Response=>{
+                let JSONDATA=Response.json();
+                let email=event.target.email.value;
+                let password=event.target.password.value;
+
+            }) 
+        }catch(err){
+            console.log(err)
+        }
+        
+    }
+
+
+    document.querySelector("#login-form").addEventListener('submit',handleSubmit)
+</script>
 
 <%- include('../templates/footer.ejs') %>
