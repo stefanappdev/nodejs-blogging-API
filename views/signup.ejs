@@ -4,6 +4,8 @@
     <h1 class="text-3xl text-center font-extrabold my-10">Sign into your profile</h1>
 
     <form id="signup-form" 
+    method="post"
+    action="/users"
     class=
     "bg-neutral-300 text-neutral-900
      w-80 h-105 p-4 rounded-md text-lg
@@ -14,6 +16,7 @@
      <input 
      aria-placeholder="Enter your Firstname" 
      placeholder="Enter your Firstname"
+     name="firstName"
      id="firstName"
      type="text"
     class="font-semibold focus:bg-blue-100"
@@ -25,17 +28,19 @@
      aria-placeholder="Enter your lastname" 
      placeholder="Enter your lastname"
      id="lastName"
+     name="lastName"
      type="text"
     class="font-semibold focus:bg-blue-100"
      />
      <br/>
     
-     <label class=" h-10 font-bold" aria-labelledby="username" for="username">Username:</label>
+     <label class=" h-10 font-bold" aria-labelledby="email" for="email">email:</label>
      <input 
-     aria-placeholder="Enter your username" 
-     placeholder="Enter your username"
-     id="username"
-     type="text"
+     aria-placeholder="Enter your email" 
+     placeholder="Enter your email"
+     id="email"
+     name="email"
+     type="email"
      class="font-semibold focus:bg-blue-100"
      />
 
@@ -47,7 +52,8 @@
      aria-placeholder="Enter your password" 
      placeholder="Enter your password"
      id="password"
-     type="text"
+     name="password"
+     type="password"
     class="font-semibold focus:bg-blue-100"
      />
     <br/>
