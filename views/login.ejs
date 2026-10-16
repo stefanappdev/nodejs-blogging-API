@@ -17,6 +17,7 @@
      id="email"
      type="text"
      class="font-semibold focus:bg-blue-100"
+     required
      />
 
     <br/>
@@ -28,7 +29,8 @@
      id="password"
      type="password"
     class="font-semibold focus:bg-blue-100"
-     />
+    required 
+    />
     <br/>
      <button class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm" type="submit">submit</button>
 
@@ -41,10 +43,23 @@
         const fetchUsers=async(url)=>await fetch(url);
         try{
             fetchUsers('http://localhost:8000/admin/users')
-            .then(Response=>{
-                let JSONDATA=Response.json();
+            .then(async(Response)=>{
+                let USERS= await Response.json();
+               
                 let email=event.target.email.value;
                 let password=event.target.password.value;
+                let matchingUser=USERS.find(user=>{
+                    if(user.email===email && user.password===password){
+                        return user
+                    }
+                })
+                
+                if(matchingUser){
+                    alert('Login was sucessful')
+                    window.location.replace('/')
+                }
+
+
 
             }) 
         }catch(err){

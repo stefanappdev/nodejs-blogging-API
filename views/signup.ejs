@@ -4,6 +4,7 @@
     <h1 class="text-3xl text-center font-extrabold my-10">Sign into your profile</h1>
 
     <form id="signup-form" 
+    onsubmit="handleSignup()"
     method="post"
     action="/admin/users"
     class=
@@ -20,6 +21,7 @@
      id="firstName"
      type="text"
     class="font-semibold focus:bg-blue-100"
+    required
      />
      <br/>
 
@@ -31,6 +33,7 @@
      name="lastName"
      type="text"
     class="font-semibold focus:bg-blue-100"
+    required
      />
      <br/>
     
@@ -42,6 +45,7 @@
      name="email"
      type="email"
      class="font-semibold focus:bg-blue-100"
+     required
      />
 
     <br/>
@@ -61,5 +65,53 @@
 
     </form>
 </div>
+
+
+<script>
+    
+
+
+
+
+
+    function handleSignup(event){
+     event.preventDefault();
+        const fetchUsers=async(url)=>await fetch(url);
+        try{
+            fetchUsers('http://localhost:8000/admin/users')
+            .then(async(Response)=>{
+                let USERS= await Response.json();
+               
+                let email=event.target.email.value;
+                let matchingUser=USERS.find(user=>{
+                    if(user.email===email){
+                        return user
+                    }
+                })
+                
+                if(matchingUser){
+                    alert('A user with this email exists in the database')
+                    return
+                }
+                
+                alert('Signup was sucessful, you will be redirected shortly');
+                
+                setTimeout(()=>{
+                  
+                    window.location.replace('/')
+                },3000)
+
+
+            }) 
+        }catch(err){
+            console.log(err)
+        }
+
+       
+    }
+
+
+    document.querySelector("#signup-form").addEventListener('submit',handleSignup)
+</script>
 
 <%- include('../templates/footer.ejs') %>

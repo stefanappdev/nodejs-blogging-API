@@ -5,8 +5,10 @@ const crypto=require('crypto')
 const app=express();
 const path=require('path');
 const { title } = require('process');
+const { json } = require('stream/consumers');
 //const userRouter=require("./routes/users.js")
 const PORT=8000;
+let users=[];
 
 //middleware
 app.use(express.static(path.join(__dirname,'public')))
@@ -34,10 +36,10 @@ pool.getConnection((error,connection)=>{
 
 
 
-
+ 
 
 app.get("/",(request,response)=>{
-    response.status(200).render('index')
+    response.status(200).render('index',{title:"Home"})
 })
 
 
@@ -49,7 +51,7 @@ app.route('/admin/users')
             throw error
         }
 
-        connection.query("SELECT * FROM users LIMIT 5",(error,data)=>{
+        connection.query("SELECT * FROM users",(error,data)=>{
 
             connection.release()
 
