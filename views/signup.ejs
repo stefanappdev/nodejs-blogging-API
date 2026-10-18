@@ -4,38 +4,23 @@
     <h1 class="text-3xl text-center font-extrabold my-10">Sign into your profile</h1>
 
     <form id="signup-form" 
-    onsubmit="handleSignup()"
-    method="post"
-    action="/admin/users"
     class=
     "bg-neutral-300 text-neutral-900
      w-80 h-105 p-4 rounded-md text-lg
      flex flex-col items-center px-3  justify-center">
 
     
-     <label class='h-10 font-bold ' aria-labelledby="firstName" for="firstName">Firstname:</label>
+     <label class='h-10 font-bold ' aria-labelledby="username" for="username">username:</label>
      <input 
-     aria-placeholder="Enter your Firstname" 
-     placeholder="Enter your Firstname"
-     name="firstName"
-     id="firstName"
+     aria-placeholder="Enter your username" 
+     placeholder="Enter your username"
+     name="username"
+     id="username"
      type="text"
     class="font-semibold focus:bg-blue-100"
     required
      />
-     <br/>
-
-      <label class='h-10 font-bold ' aria-labelledby="lastName" for="lastName">Lastname:</label>
-     <input 
-     aria-placeholder="Enter your lastname" 
-     placeholder="Enter your lastname"
-     id="lastName"
-     name="lastName"
-     type="text"
-    class="font-semibold focus:bg-blue-100"
-    required
-     />
-     <br/>
+  
     
      <label class=" h-10 font-bold" aria-labelledby="email" for="email">email:</label>
      <input 
@@ -59,6 +44,7 @@
      name="password"
      type="password"
     class="font-semibold focus:bg-blue-100"
+    required
      />
     <br/>
      <button class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm" type="submit">submit</button>
@@ -67,42 +53,66 @@
 </div>
 
 
-<script>
-    
+<script >
 
-
-
-
-
-    function handleSignup(event){
+function handleSignup(event){
      event.preventDefault();
-        const fetchUsers=async(url)=>await fetch(url);
+       
         try{
-            fetchUsers('http://localhost:8000/admin/users')
-            .then(async(Response)=>{
-                let USERS= await Response.json();
-               
-                let email=event.target.email.value;
-                let matchingUser=USERS.find(user=>{
-                    if(user.email===email){
+           
+            let email=event.target.email.value;
+            let username=event.target.username.value;
+            let password=event.target.password.value;
+            
+        
+
+          const checkMatchedUser=async()=>{
+            await fetch('http://localhost:8000/users')
+            .then(response=>response.json())
+            .then(users=>{
+          
+                let matchingUsers=users.find(user=>{
+                    if(user.email===email||user.username===username){
                         return user
                     }
                 })
-                
-                if(matchingUser){
-                    alert('A user with this email exists in the database')
-                    return
+
+                if(matchingUsers){
+                    alert('A user with this email or username exists in the database')   
+                    return 
+                     
+                }else{
+
+                    const headers={
+                        "Content-Type":"application/json",
+                    }
+                    const body=JSON.stringify({
+                        email,username,password
+                    })
+
+                    const options={
+                        method:'POST',
+                        headers,
+                        body
+                    }
+
+                    fetch('http://localhost:8000/users',options)
+                    .then(response=>{
+                        if(response.status===200){
+                            alert('new user was added sucessfully')
+                            window.location.replace("/")
+                        }
+                    })
+                    
                 }
-                
-                alert('Signup was sucessful, you will be redirected shortly');
-                
-                setTimeout(()=>{
-                  
-                    window.location.replace('/')
-                },3000)
+            })
+            
+        }
 
-
-            }) 
+      
+       
+        checkMatchedUser()
+            
         }catch(err){
             console.log(err)
         }
@@ -110,8 +120,8 @@
        
     }
 
-
-    document.querySelector("#signup-form").addEventListener('submit',handleSignup)
+document.querySelector("#signup-form").addEventListener('submit',handleSignup)
+   
 </script>
 
 <%- include('../templates/footer.ejs') %>

@@ -4,8 +4,8 @@ const mysql=require('mysql');
 const crypto=require('crypto')
 const app=express();
 const path=require('path');
-const { title } = require('process');
-const { json } = require('stream/consumers');
+
+//const cookieParser=require('cookie-parser');
 //const userRouter=require("./routes/users.js")
 const PORT=8000;
 let users=[];
@@ -13,9 +13,20 @@ let users=[];
 //middleware
 app.use(express.static(path.join(__dirname,'public')))
 app.use(express.urlencoded({extended:true}));
+//app.use(cookieParser())
 app.use(express.json())
 
 app.set('view engine','ejs')
+
+
+
+
+
+
+
+
+
+
 
 //mysql
 const pool=mysql.createPool({
@@ -43,8 +54,11 @@ app.get("/",(request,response)=>{
 })
 
 
+
+
+
  
-app.route('/admin/users')
+app.route('/users')
 .get((request,response)=>{
     pool.getConnection((error,connection)=>{
         if(error){
@@ -59,7 +73,7 @@ app.route('/admin/users')
                console.log(error)
             }
 
-            console.log(data)
+           
             response.status(200).send(data)
         })
 
@@ -73,31 +87,30 @@ app.route('/admin/users')
     pool.getConnection((error,connection)=>{
         if(error){throw error}
 
-        let userId= Math.floor(Math.random()*700);
-        console.log(request.body)
+        let userId= crypto.randomUUID();
         const params={
             userId:userId,
-            firstName:request.body.firstName,
-            lastName:request.body.lastName,
             email:request.body.email,
+            username:request.body.username,
             password:request.body.password
         };
         
+        console.log(params)
+
         
+    connection.query('INSERT INTO users (userId,email,username,password) VALUES (?,?,?,?)',
         
-    connection.query('INSERT INTO users (userId,firstName,lastName,email,password) VALUES (?,?,?,?,?)',
-        
-        [params.userId,params.firstName,params.lastName,params.email,params.password],
-        
+        [params.userId,params.email,params.username,params.password],   
         (error,data)=>{
         
         connection.release()
 
         if(!error){
-           
-            response.status(200).redirect("/")
+           console.log(data)
+           response.status(200).send(data)
+
         }else{
-            console.log(error)
+             console.log(error)
         } })
 
 
@@ -105,19 +118,17 @@ app.route('/admin/users')
 })
 
 
+app.route("/users/:username")
 
 
-app.get("/users/login",(request,response)=>{
+app.get("/login",(request,response)=>{
     response.status(200).render('login',{title:'login'})
 })
 
-app.get("/users/signup",(request,response)=>{
+app.get("/signup",(request,response)=>{
     response.status(200).render('signup',{title:'signup'})
 })
 
-app.get("/users/:username",(request,response)=>{
-    response.status(200).render('users/profile',{title:request.params.username})
-})
 
 
 app.use((request,response)=>{
