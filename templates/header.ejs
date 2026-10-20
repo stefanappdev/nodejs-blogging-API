@@ -14,7 +14,7 @@
 <div>
     <header class="flex items-center justify-between bg-orange-500 h-10 w-full ">
 
-        <h1 class="text-3xl [align-self:flex-start] font-extrabold text-stone-200">Our Blogs</h1>
+        <h1 id="currentUser" class="text-3xl [align-self:flex-start] font-extrabold text-stone-200">Welcome Guest</h1>
 
 
 
@@ -64,11 +64,43 @@
                 <a class='mobile-menu-link my-2 cursor pointer 
                 text-md font-semibold' 
                 href="/signup">Signup
-            </a>
+                </a>
+
+                <a class='mobile-menu-link my-2 cursor pointer 
+                text-md font-semibold' 
+                href="/logout">Logout
+                </a>
+
+                 <a class='hidden mobile-menu-link my-2 cursor pointer 
+                text-md font-semibold' 
+                href="/user/:id">profile
+                </a>
             </nav>
 
 
              <script>
+
+
+
+                function parseCookie(cookieName){
+                    let cookies=document.cookie.split('; ');
+                    for(let cookie of cookies){
+                        let [name,...rest]=cookie.split("=");
+                        if(name===cookieName){
+                            return decodeURIComponent(rest.join('='))
+                        }
+                    }
+                    return null
+                }
+
+                
+
+                let sessionCookie=parseCookie("session_id");
+                console.log(sessionCookie)
+                let sessionDetails=JSON.parse(sessionCookie);
+                let user=sessionDetails.username
+                document.querySelector('#currentUser').textContent=` welcome ${user}`
+
             let dropdownCloseBtn=document.querySelector("#dropdown-close-btn");
             let dropdown=document.querySelector("#mobile-menu-dropdown");
             let dropdownOpenBtn=document.querySelector("#dropdown-open-btn")
@@ -108,6 +140,16 @@
                 <a class='desktop-menu-link mx-3 cursor pointer 
                 text-xl font-semibold' 
                 href="/signup">Signup
+            </a>
+
+                <a class='desktop-menu-link mx-3 cursor pointer 
+                text-xl font-semibold' 
+                href="/logout">Logout
+            </a>
+
+                <a class='hidden desktop-menu-link mx-3 cursor pointer 
+                text-xl font-semibold' 
+                href="/users/:id">profile
             </a>
             </nav>
 

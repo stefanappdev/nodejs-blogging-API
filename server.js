@@ -3,9 +3,10 @@ const ejs=require('ejs');
 const mysql=require('mysql');
 const crypto=require('crypto')
 const app=express();
+const cookieParser=require('cookie-parser')
 const path=require('path');
 
-//const cookieParser=require('cookie-parser');
+
 //const userRouter=require("./routes/users.js")
 const PORT=8000;
 let users=[];
@@ -13,7 +14,7 @@ let users=[];
 //middleware
 app.use(express.static(path.join(__dirname,'public')))
 app.use(express.urlencoded({extended:true}));
-//app.use(cookieParser())
+app.use(cookieParser())
 app.use(express.json())
 
 app.set('view engine','ejs')
@@ -118,12 +119,71 @@ app.route('/users')
 })
 
 
-app.route("/users/:username")
+//app.route("/users/:username")
 
 
-app.get("/login",(request,response)=>{
+app.route("/login")
+.get((request,response)=>{
     response.status(200).render('login',{title:'login'})
 })
+
+.post((request,response)=>{
+    
+    async function checkCredentials(){
+            await fetch('http://localhost:8000/users')
+            .then(response=>response.json())
+            .then(users=>{
+                let matchingUser=users.find(user=>{
+                    if(user.username===request.body.username&&user.password===request.body.password){
+                        return user
+                    }
+                })
+                if(!matchingUser){
+                    response.status(401).send({status:401,msg:'Please check your username or password'})
+                }
+            })
+    } 
+    
+    checkCredentials()
+    
+    
+    let username=request.body.username;
+    let sessionId=crypto.randomUUID();
+    let cookieOptions={
+        expires:new Date(Date.now()+864000),
+        maxAge:2*24*3600*1000,
+        sameSite:true
+    }
+    let params=[sessionId,username,cookieOptions.expires]
+
+
+    pool.getConnection((error,connection)=>{
+        if(error){
+            throw error
+        }
+
+
+    connection.query("INSERT INTO sessions (sessionId,username,expiresAt) VALUES  (?,?,?)",
+        params,(error,data)=>{
+
+            connection.release()
+
+            if(error){
+                console.log(error)
+            }else{
+                response.cookie('session_id',JSON.stringify({username,sessionId}),cookieOptions)
+                response.status(200).send({data:data,msg:"Login sucessful",status:200})
+            }
+        }
+    )
+
+
+    })
+})
+
+
+
+
 
 app.get("/signup",(request,response)=>{
     response.status(200).render('signup',{title:'signup'})
