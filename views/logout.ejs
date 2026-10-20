@@ -1,0 +1,40 @@
+<%- include('../templates/header.ejs') %>
+
+<div class="[height:700px] flex flex-col items-center justify-center" id="logout-page">
+    <h1 class="text-3xl text-center font-extrabold my-10">Logout</h1>
+
+    <form 
+    id="logout-form" 
+    onsubmit="handleLogout()"
+    class=
+    "bg-neutral-300 text-neutral-900
+     w-80 h-100 rounded-md text-lg
+     flex flex-col items-center px-3  justify-center">
+
+     <h2 class='h-10 font-bold'>Logging out?</h2>
+    
+     <button  id="confirm-logout-btn" class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm" type="submit">submit</button>
+
+    </form>
+
+    <div id="confirm-logout-window" class=
+    "hidden bg-neutral-300 text-neutral-900
+     w-80 h-100 rounded-md text-lg
+     flex flex-col items-center px-3  justify-center">
+
+
+     <h2 class='h-10 font-bold'>Are you sure?</h2>
+
+     <div id="confirm-logout-btns-container" class="  inline-flex ">
+        <button id="confirm-logout-yes" class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm mx-2">yes</button>
+        <button id="confirm-logout-no" class="h-12 w-20 font-bold bg-red-700 text-stone-200 rounded-sm mx-2">No</button>
+     </div>
+     
+    </div>
+
+    <script src="/scripts/pagescripts/logout.js"></script>
+</div>
+
+
+
+<%- include('../templates/footer.ejs') %>

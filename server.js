@@ -119,8 +119,12 @@ app.route('/users')
 })
 
 
-//app.route("/users/:username")
-
+app.route("/users/:username/profile")
+.get((request,response)=>{
+    if(request.params.username){
+        response.status(200).render("profile.ejs",{title:request.params.username})
+    }
+})
 
 app.route("/login")
 .get((request,response)=>{
@@ -128,8 +132,10 @@ app.route("/login")
 })
 
 .post((request,response)=>{
-    
+     let status;
+
     async function checkCredentials(){
+           
             await fetch('http://localhost:8000/users')
             .then(response=>response.json())
             .then(users=>{
@@ -138,8 +144,10 @@ app.route("/login")
                         return user
                     }
                 })
-                if(!matchingUser){
-                    response.status(401).send({status:401,msg:'Please check your username or password'})
+                if(matchingUser){
+                   status=200;
+                }else{
+                    status=401;
                 }
             })
     } 
@@ -171,8 +179,14 @@ app.route("/login")
             if(error){
                 console.log(error)
             }else{
-                response.cookie('session_id',JSON.stringify({username,sessionId}),cookieOptions)
-                response.status(200).send({data:data,msg:"Login sucessful",status:200})
+                
+                if(status===200){
+                     response.cookie('session_id',JSON.stringify({username,sessionId}),cookieOptions)
+                    response.status(200).send({data:data,msg:"Login sucessful",status:200})
+                   
+                }else if(status===401){
+                     response.status(401).send({status:401,msg:'Please check your username or password'})
+                }
             }
         }
     )
@@ -188,6 +202,14 @@ app.route("/login")
 app.get("/signup",(request,response)=>{
     response.status(200).render('signup',{title:'signup'})
 })
+
+
+app.get("/logout",(request,response)=>{
+    response.status(200).render('logout',{title:'logout'})
+})
+
+
+
 
 
 

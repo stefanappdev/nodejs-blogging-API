@@ -14,7 +14,7 @@
 <div>
     <header class="flex items-center justify-between bg-orange-500 h-10 w-full ">
 
-        <h1 id="currentUser" class="text-3xl [align-self:flex-start] font-extrabold text-stone-200">Welcome Guest</h1>
+        <h1 id="currentUser" class="text-3xl [align-self:flex-start] font-extrabold text-stone-200"></h1>
 
 
 
@@ -50,70 +50,32 @@
             >
                 <a 
                 class=
-                'mobile-menu-link my-2 cursor-pointer text-md font-semibold' 
+                'mobile-home-link mobile-menu-link my-2 cursor-pointer text-md font-semibold' 
                 href="/">
                     Home
                 </a>
 
-                <a class='mobile-menu-link my-2 cursor-pointer 
+                <a class='mobile-login-link mobile-menu-link my-2 cursor-pointer 
                 text-md font-semibold' 
                 href="/login">
                 Login
                 </a>
 
-                <a class='mobile-menu-link my-2 cursor pointer 
+                <a class='mobile-signup-link mobile-menu-link my-2 cursor pointer 
                 text-md font-semibold' 
                 href="/signup">Signup
                 </a>
 
-                <a class='mobile-menu-link my-2 cursor pointer 
+                <a class='mobile-logout-link mobile-menu-link my-2 cursor pointer 
                 text-md font-semibold' 
                 href="/logout">Logout
                 </a>
 
-                 <a class='hidden mobile-menu-link my-2 cursor pointer 
+                 <a class='hidden mobile-profile-link mobile-menu-link my-2 cursor pointer 
                 text-md font-semibold' 
-                href="/user/:id">profile
+                href="">profile
                 </a>
             </nav>
-
-
-             <script>
-
-
-
-                function parseCookie(cookieName){
-                    let cookies=document.cookie.split('; ');
-                    for(let cookie of cookies){
-                        let [name,...rest]=cookie.split("=");
-                        if(name===cookieName){
-                            return decodeURIComponent(rest.join('='))
-                        }
-                    }
-                    return null
-                }
-
-                
-
-                let sessionCookie=parseCookie("session_id");
-                console.log(sessionCookie)
-                let sessionDetails=JSON.parse(sessionCookie);
-                let user=sessionDetails.username
-                document.querySelector('#currentUser').textContent=` welcome ${user}`
-
-            let dropdownCloseBtn=document.querySelector("#dropdown-close-btn");
-            let dropdown=document.querySelector("#mobile-menu-dropdown");
-            let dropdownOpenBtn=document.querySelector("#dropdown-open-btn")
-
-            dropdownCloseBtn.addEventListener('click',()=>{
-                dropdown.classList.add('hidden');
-            })
-
-             dropdownOpenBtn.addEventListener('click',()=>{
-                dropdown.classList.remove('hidden');
-            })
-
-         </script>
 
         </div>
     </div>
@@ -126,32 +88,37 @@
             >
                 <a 
                 class=
-                'desktop-menu-link mx-3 cursor-pointer text-xl font-semibold' 
+                'desktop-home-link desktop-menu-link mx-3 cursor-pointer text-xl font-semibold' 
                 href="/">
                     Home
                 </a>
 
-                <a class='desktop-menu-link mx-3 cursor-pointer 
+                <a class='desktop-login-link desktop-menu-link mx-3 cursor-pointer 
                 text-xl font-semibold' 
                 href="/login">
                 Login
                 </a>
 
-                <a class='desktop-menu-link mx-3 cursor pointer 
+                <a class='desktop-signup-link desktop-menu-link mx-3 cursor pointer 
                 text-xl font-semibold' 
                 href="/signup">Signup
             </a>
 
-                <a class='desktop-menu-link mx-3 cursor pointer 
+          
+
+             <a class='desktop-profile-link hidden desktop-menu-link mx-3 cursor pointer 
+                text-xl font-semibold' 
+                href="">profile
+            </a>
+            
+            <a class='desktop-logout-link desktop-menu-link mx-3 cursor pointer 
                 text-xl font-semibold' 
                 href="/logout">Logout
             </a>
-
-                <a class='hidden desktop-menu-link mx-3 cursor pointer 
-                text-xl font-semibold' 
-                href="/users/:id">profile
-            </a>
-            </nav>
+        </nav>
 
     </div>
+
+
+     <script src="/scripts/pagescripts/header.js"></script>
 </header>

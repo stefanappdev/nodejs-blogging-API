@@ -44,29 +44,6 @@
                 let username=event.target.username.value;
                 let password=event.target.password.value;
 
-                /*
-                const checkUsersOnLogin=async()=>{
-                    await fetch('http://localhost:8000/users')
-                    .then(response=>response.json())
-                    .then(data=>{
-                        let users=data;
-                        let matchedUser=users.find(user=>{
-                            if(user.username===username&&user.password===password){
-                                return user
-                            }
-                        })
-
-                        if(matchedUser){
-                            alert("Login sucessful")
-                            window.location.replace("/")
-                        }else{
-                            alert("Your password or username is incorrect")
-                        }
-
-                    })
-                }
-
-        checkUsersOnLogin()/*/
 
         const login=async()=>{
             let options={
@@ -87,6 +64,7 @@
             .then(data=>{
                 if(data.status===401){
                     alert(data.msg)
+                    window.location.replace("/login")
                 }else if(data.status===200){
                     alert(data.msg)
                     window.location.replace('/')
