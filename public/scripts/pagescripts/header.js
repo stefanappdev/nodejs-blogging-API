@@ -14,7 +14,7 @@ function parseCookie(cookieName){
 
 
 if(document.cookie){
-    let sessionCookie=parseCookie("session_id")
+    let sessionCookie=parseCookie("username")
     let sessionDetails=JSON.parse(sessionCookie);
     user=sessionDetails.username;
 }
@@ -42,13 +42,13 @@ function handleDropDownMenuDisplay(){
 function handleRoutesDisplay(){
     
     
-    if(user!==''){
+    if(user){
 
         /*if a user logs in hide all login and signup routes,
          show hidden routes on sign in*/ 
 
 
-        document.querySelector('#currentUser').textContent=` welcome ${user}`
+        document.querySelector('#currentUser').textContent=`welcome ${user}`
         document.querySelector(".mobile-signup-link").classList.add('hidden');
         document.querySelector(".desktop-signup-link").classList.add('hidden');
         document.querySelector(".mobile-login-link").classList.add('hidden');
@@ -58,6 +58,7 @@ function handleRoutesDisplay(){
 
          document.querySelector(".desktop-profile-link").href=`/users/${user}/profile`
         document.querySelector(".mobile-profile-link").href=`/users/${user}/profile`
+      
 
     }else if(user===''){
         document.querySelector(".mobile-logout-link").classList.add('hidden');

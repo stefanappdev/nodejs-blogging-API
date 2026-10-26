@@ -5,6 +5,7 @@ const crypto=require('crypto')
 const app=express();
 const cookieParser=require('cookie-parser')
 const path=require('path');
+const { error } = require('console');
 
 
 //const userRouter=require("./routes/users.js")
@@ -126,10 +127,16 @@ app.route("/users/:username/profile")
     }
 })
 
-app.route("/login")
+
+/*
+app.route("/blogs/:username")
 .get((request,response)=>{
-    response.status(200).render('login',{title:'login'})
-})
+    if(request.params.username){
+        response.status(200).render("blogs.ejs",{title:request.params.username})
+    }
+})*/
+
+app.route('/sessions')
 
 .post((request,response)=>{
      let status;
@@ -181,7 +188,7 @@ app.route("/login")
             }else{
                 
                 if(status===200){
-                     response.cookie('session_id',JSON.stringify({username,sessionId}),cookieOptions)
+                     response.cookie('username',JSON.stringify({username}),cookieOptions)
                     response.status(200).send({data:data,msg:"Login sucessful",status:200})
                    
                 }else if(status===401){
@@ -196,7 +203,32 @@ app.route("/login")
 })
 
 
+.delete((request,response)=>{
+    let user=request.params.username;
+    pool.getConnection((error,connection)=>{
+        if(error){throw error};
+        
+        connection.query('DELETE FROM sessions WHERE username = ?',[user],(error,data)=>{
+            connection.release();
+            if(error){console.log(error)}
+            response.status(200).send({data:data,msg:'Logout successful',status:200})
+        })
+    }) 
+})
 
+
+
+
+
+
+
+
+
+
+app.route("/login")
+.get((request,response)=>{
+    response.status(200).render('login',{title:'login'})
+})
 
 
 app.get("/signup",(request,response)=>{
@@ -204,7 +236,10 @@ app.get("/signup",(request,response)=>{
 })
 
 
-app.get("/logout",(request,response)=>{
+
+
+app.route('/logout')
+.get((request,response)=>{
     response.status(200).render('logout',{title:'logout'})
 })
 

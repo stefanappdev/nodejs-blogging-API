@@ -59,7 +59,7 @@
                 }
             }
 
-            await fetch('http://localhost:8000/login',options)
+            await fetch('http://localhost:8000/sessions',options)
             .then(resp=>resp.json())
             .then(data=>{
                 if(data.status===401){
