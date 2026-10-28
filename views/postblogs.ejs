@@ -1,0 +1,101 @@
+<%- include('../templates/header.ejs') %>
+
+<div class="[height:700px] flex flex-col items-center justify-center">
+    <h1 class="text-3xl text-center font-extrabold my-10">Post a new blog</h1>
+
+    <form 
+    id="login-form" 
+    class=
+    "bg-neutral-300 text-neutral-900
+     w-80 h-100 rounded-md text-lg
+     flex flex-col items-center px-3  justify-center">
+
+     <span id="user" class="hidden"><%= user %></span>
+
+     <label class=" h-10 font-bold" aria-labelledby="blog_subject" for="blog_subject">subject</label>
+     <input 
+     aria-placeholder="Enter the subject of your blog" 
+     placeholder="Enter the subject of your blog" 
+     id="blog_subject"
+     type="text"
+     class="font-semibold focus:bg-blue-100"
+     required
+     />
+
+    <br/>
+
+     <label class='h-10 font-bold ' aria-labelledby="blog_content" for="blog_content">body:</label>
+     <textarea 
+     aria-placeholder="Enter your content" 
+     placeholder="Enter your content" 
+     id="blog_content"
+     type="text"
+    class="font-semibold focus:bg-blue-100"
+    required 
+    >
+    </textarea>
+    <br/>
+     <button class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm" type="submit">submit</button>
+
+    </form>
+</div>
+
+<script>
+    function handleSubmit(event){
+        event.preventDefault();
+
+                let subject=event.target.blog_subject.value;
+                let body=event.target.blog_content.value;
+                let user=document.querySelector('#user').textContent
+                let datePosted=Date.now()
+
+
+        const login=async()=>{
+            let options={
+                
+                
+                method:'POST',
+                body:JSON.stringify({
+                    blog_subject:subject,
+                    blog_content:body,
+                    user:user,
+                    datePosted:datePosted
+                    
+                }),
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            }
+
+            await fetch(`http://localhost:8000/blogs/${user}`,options)
+            .then(resp=>resp.json())
+            .then(data=>{
+                if(data.status===404){
+                    alert(data.msg)
+                    window.location.replace(`/blogs/${user}/postblogs`)
+                }else if(data.status===200){
+                    alert(data.msg)
+                    window.location.replace(`/blogs/${user}`)
+                }
+            })
+        }
+
+
+
+        try{
+            login()
+        }catch(error){
+            console.log(error)
+        }
+
+
+            
+    }
+
+
+   
+
+    document.querySelector("#login-form").addEventListener('submit',handleSubmit)
+</script>
+
+<%- include('../templates/footer.ejs') %>

@@ -1,0 +1,25 @@
+<%- include('../templates/header.ejs') %>
+<div class="[height:700px] flex flex-col items-center justify-center" id="profile-page">
+    <h1 class="text-3xl text-center font-extrabold "> <%= user %> 's blogs</h1>
+
+<div class="my-2" id="blogs">
+    
+    <% if (blogs.length!==0) { %>
+    <% blogs.forEach ( (blog) => { %>
+    <li>
+       Subject: <span class="font-bold text-lg"> <%= blog.blog_subject %> </span>
+        <br/>
+        <a href="/blogs/<%= user %>/<%= blog.blog_id%>"> show more </a>
+    
+    </li>
+    <br/>
+    <% })%>
+    <% } else {%>
+        <div>No blogs found</div>
+    <%}%>
+    <br>
+    <a  href="/blogs/<%= user %>/postblogs"> post a new blog</a>
+    
+</div>
+</div>
+<%- include('../templates/footer.ejs') %>

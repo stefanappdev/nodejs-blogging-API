@@ -1,3 +1,27 @@
 <%- include('../templates/header.ejs') %>
-<h1><%= title %>'s page</h1>
+<div class="[height:700px] flex flex-col items-center justify-center" id="profile-page">
+    <h1 class="text-3xl text-center font-extrabold my-10"><%= user %>'s page</h1>
+
+ <div
+    id="profile-form" 
+    class=
+    "bg-neutral-300 text-neutral-900
+     w-80 h-100 rounded-md text-lg 
+     flex flex-col items-center px-3  justify-center">
+
+    <br/> 
+
+    <span>Click here to view blogs</span>
+
+     <br/> 
+
+   
+   
+    <a href="/blogs/<%= user %>">
+     <button id="view-blogs-btn" class="h-12 w-25 font-bold bg-green-700 text-stone-200 rounded-sm" >view blogs</button>
+   </a>
+   </div>
+
+
+</div>
 <%- include('../templates/footer.ejs') %>

@@ -2,10 +2,8 @@
 
 
 
-   function handleLogout(){
-
+   function handleLogout(event){
    event.preventDefault()
-
    let user=""
 
    function parseCookie(cookieName){
@@ -43,8 +41,6 @@
      const runLogout=()=>{
 
        
-         console.log(user)
-
         const options={
          method:"DELETE",
          headers:{
@@ -52,10 +48,6 @@
          },
          body:JSON.stringify({user:user})
         }
-
-
-
-
 
         const deleteUserSession=async()=>{
             await fetch('http://localhost:8000/sessions',options)
@@ -87,5 +79,5 @@
 
 }
 
-
+ document.querySelector("#logout-form").addEventListener('submit',handleLogout)
 

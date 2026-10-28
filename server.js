@@ -6,6 +6,7 @@ const app=express();
 const cookieParser=require('cookie-parser')
 const path=require('path');
 const { error } = require('console');
+const { constants } = require('buffer');
 
 
 //const userRouter=require("./routes/users.js")
@@ -52,7 +53,7 @@ pool.getConnection((error,connection)=>{
  
 
 app.get("/",(request,response)=>{
-    response.status(200).render('index',{title:"Home"})
+    response.status(200).render('index',{pageName:"Home",user:""})
 })
 
 
@@ -123,18 +124,127 @@ app.route('/users')
 app.route("/users/:username/profile")
 .get((request,response)=>{
     if(request.params.username){
-        response.status(200).render("profile.ejs",{title:request.params.username})
+        response.status(200).render("profile.ejs",{pageName:'profile page',user:request.params.username})
     }
 })
 
 
-/*
-app.route("/blogs/:username")
+
+app.route("/blogs/:username/postblogs")
 .get((request,response)=>{
     if(request.params.username){
-        response.status(200).render("blogs.ejs",{title:request.params.username})
+        response.status(200).render("postblogs.ejs",{pageName:'add blogs',user:request.params.username})
     }
-})*/
+})
+
+
+
+app.route('/blogs/:username')
+.get((request,response)=>{
+    pool.getConnection((error,connection)=>{
+        if(error){throw error}
+        connection.query('SELECT * FROM userblogs WHERE user = ?',[request.params.username],(error,data)=>{
+            connection.release();
+
+            if(error){
+                console.log(error)
+            }else{
+                response.status(200).render("blogs.ejs",{pageName:`${request.params.username} blogs`,blogs:data,user:request.params.username})
+            }
+        })
+    })
+})
+
+.patch((request,response)=>{
+
+    let blogID=crypto.randomUUIDv7();
+    let params=[
+        request.body.blog_content,
+        request.body.blog_subject,
+        request.body.user,
+        blogID]
+
+    pool.getConnection((error,connection)=>{
+        if(error){throw error};
+        connection.query('UPDATE userblogs SET blog_content=?,blog_subject=? WHERE USER=? AND blog_id=?)',params,
+        (error,data)=>{
+            connection.release();
+            if(error){
+                response.status(404).send({data:data,msg:'Error occured during blog update ',status:404})
+            }else{
+                response.status(200).send({status:200,data:data,msg:"Your blog was updated"});
+            }
+        })
+    })
+})
+
+.post((request,response)=>{
+
+    let blog_id=crypto.randomUUID();
+
+    console.log(request.body)
+    let params=[blog_id,
+        request.body.blog_content,
+        request.body.user,
+        request.body.Dateposted,
+        request.body.blog_subject]
+
+    pool.getConnection((error,connection)=>{
+        if(error){throw error};
+        connection.query('INSERT INTO userblogs (blog_id,blog_content,user,postedOn,blog_subject) VALUES (?,?,?,?,?)',params,
+        (error,data)=>{
+            connection.release();
+            if(error){
+                 response.status(404).send({data:data,msg:'Error occured while attempting to post blog ',status:404})
+            }else{
+                response.status(200).send({status:200,data:data,msg:"the new blog was posted"});
+            }
+        })
+    })
+})
+
+
+.delete((request,response)=>{
+    let blogId=request.body.blog_id;
+    pool.getConnection((error,connection)=>{
+        if(error){throw error};
+        
+        connection.query('DELETE FROM userblogs WHERE blog_id = ?',[blogId],(error,data)=>{
+            connection.release();
+            if(error){
+                 response.status(404).send({data:data,msg:'Error occured during blog deletion ',status:404})
+            }
+            response.status(200).send({data:data,msg:'blog deleted sucessfully',status:200})
+        })
+    }) 
+})
+
+
+
+
+
+app.get('/blogs/:user/:id',(request,response)=>{
+    let blog_id=request.params.id;
+    let user=request.params.user;
+    
+
+    pool.getConnection((err,connection)=>{
+        if(err){throw err};
+        connection.query('SELECT * FROM userblogs WHERE blog_id=? AND user=?',
+        [blog_id,user],(err,data)=>{
+            connection.release();
+            if(err){
+               console.log(err)
+            }else{
+                
+                response.status(200).render('blogDetails.ejs',{pageName:'Blog Details',blogs:data,user:user});
+            }
+        })
+    })
+})
+
+
+
 
 app.route('/sessions')
 
@@ -227,12 +337,12 @@ app.route('/sessions')
 
 app.route("/login")
 .get((request,response)=>{
-    response.status(200).render('login',{title:'login'})
+    response.status(200).render('login',{pageName:'login',user:''})
 })
 
 
 app.get("/signup",(request,response)=>{
-    response.status(200).render('signup',{title:'signup'})
+    response.status(200).render('signup',{pageName:'signup',user:''})
 })
 
 
@@ -240,7 +350,7 @@ app.get("/signup",(request,response)=>{
 
 app.route('/logout')
 .get((request,response)=>{
-    response.status(200).render('logout',{title:'logout'})
+    response.status(200).render('logout',{pageName:'logout',user:''})
 })
 
 
@@ -249,7 +359,7 @@ app.route('/logout')
 
 
 app.use((request,response)=>{
-      response.status(404).render('404',{title:"404 page"})
+      response.status(404).render('404',{pageName:'Error 404',user:''})
 })
 
 
