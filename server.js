@@ -155,29 +155,6 @@ app.route('/blogs/:username')
     })
 })
 
-.patch((request,response)=>{
-
-    let blogID=crypto.randomUUIDv7();
-    let params=[
-        request.body.blog_content,
-        request.body.blog_subject,
-        request.body.user,
-        blogID]
-
-    pool.getConnection((error,connection)=>{
-        if(error){throw error};
-        connection.query('UPDATE userblogs SET blog_content=?,blog_subject=? WHERE USER=? AND blog_id=?)',params,
-        (error,data)=>{
-            connection.release();
-            if(error){
-                response.status(404).send({data:data,msg:'Error occured during blog update ',status:404})
-            }else{
-                response.status(200).send({status:200,data:data,msg:"Your blog was updated"});
-            }
-        })
-    })
-})
-
 .post((request,response)=>{
 
     let blog_id=crypto.randomUUID();
@@ -204,26 +181,12 @@ app.route('/blogs/:username')
 })
 
 
-.delete((request,response)=>{
-    let blogId=request.body.blog_id;
-    pool.getConnection((error,connection)=>{
-        if(error){throw error};
-        
-        connection.query('DELETE FROM userblogs WHERE blog_id = ?',[blogId],(error,data)=>{
-            connection.release();
-            if(error){
-                 response.status(404).send({data:data,msg:'Error occured during blog deletion ',status:404})
-            }
-            response.status(200).send({data:data,msg:'blog deleted sucessfully',status:200})
-        })
-    }) 
-})
 
 
 
 
-
-app.get('/blogs/:user/:id',(request,response)=>{
+app.route('/blogs/:user/:id')
+.get((request,response)=>{
     let blog_id=request.params.id;
     let user=request.params.user;
     
@@ -242,6 +205,58 @@ app.get('/blogs/:user/:id',(request,response)=>{
         })
     })
 })
+
+
+
+.patch((request,response)=>{
+
+    
+    let params=[
+        request.body.blog_content,
+        request.body.blog_subject,
+        request.body.user,
+        request.body.blog_id]
+
+    pool.getConnection((error,connection)=>{
+        if(error){throw error};
+        connection.query('UPDATE userblogs SET blog_content=?,blog_subject=? WHERE user=? AND blog_id=?',params,
+        (error,data)=>{
+            connection.release();
+            if(error){
+                throw(error)
+            }else{
+                response.status(200).send({status:200,data:data,msg:"Your blog was updated"});
+            }
+        })
+    })
+})
+
+
+
+
+.delete((request,response)=>{
+    console.log(request.body)
+    let blog_id=request.body.blog_id;
+    let user=request.body.user;
+
+
+    pool.getConnection((error,connection)=>{
+        if(error){throw error};
+        
+        connection.query('DELETE FROM userblogs WHERE blog_id=?',[blog_id],(error,data)=>{
+            connection.release();
+            if(error){
+                 response.status(404).send({status:404,msg:"unable to delete blog due to an error"})
+            }
+            console.log(data)
+            response.status(200).send({status:200,data:data,msg:"blog deleted sucessfully"})
+        })
+    }) 
+})
+
+
+
+
 
 
 

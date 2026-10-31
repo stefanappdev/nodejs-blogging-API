@@ -1,10 +1,15 @@
 <%- include('../templates/header.ejs') %>
 
 <div class="[height:700px] flex flex-col items-center justify-center">
+   
+ 
+
     <h1 class="text-3xl text-center font-extrabold my-10">Post a new blog</h1>
 
+
+    
     <form 
-    id="login-form" 
+    id="postBlogForm" 
     class=
     "bg-neutral-300 text-neutral-900
      w-80 h-100 rounded-md text-lg
@@ -13,31 +18,48 @@
      <span id="user" class="hidden"><%= user %></span>
 
      <label class=" h-10 font-bold" aria-labelledby="blog_subject" for="blog_subject">subject</label>
+     
      <input 
-     aria-placeholder="Enter the subject of your blog" 
-     placeholder="Enter the subject of your blog" 
+     aria-placeholder="Enter the blog title" 
      id="blog_subject"
      type="text"
      class="font-semibold focus:bg-blue-100"
+     value="Enter your title"
      required
      />
 
     <br/>
 
-     <label class='h-10 font-bold ' aria-labelledby="blog_content" for="blog_content">body:</label>
+     <label class='h-10 font-bold ' aria-labelledby="blog_content" for="blog_content">share your story:</label>
      <textarea 
-     aria-placeholder="Enter your content" 
-     placeholder="Enter your content" 
+     aria-placeholder="Share your story" 
+     placeholder="share your story" 
+     rows="5"
+     cols="25"
      id="blog_content"
      type="text"
-    class="font-semibold focus:bg-blue-100"
+    class="font-semibold border-stone-700 border-4 focus:bg-blue-100"
     required 
     >
+    Enter your story here
     </textarea>
     <br/>
-     <button class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm" type="submit">submit</button>
+    
+    <div class="inline-flex items-center align-center">
+    
+      <button id="submitBlog"  class="h-12 w-25 mx-5 font-bold bg-green-700 text-stone-200 rounded-sm" >submit</button>
+      
+   </div>
+    
 
     </form>
+
+
+       <div class="inline-flex items-center my-2 align-center">
+    
+      <button id="cancelBlogPost"  class="h-12 w-25 [margin-left:-220px] mt-6 font-bold bg-red-700 text-stone-200 rounded-sm" >back</button>
+      
+   </div>
 </div>
 
 <script>
@@ -50,7 +72,7 @@
                 let datePosted=Date.now()
 
 
-        const login=async()=>{
+        const postNewBlog=async()=>{
             let options={
                 
                 
@@ -83,7 +105,7 @@
 
 
         try{
-            login()
+            postNewBlog()
         }catch(error){
             console.log(error)
         }
@@ -94,8 +116,15 @@
 
 
    
+    document.querySelector('#cancelBlogPost').addEventListener('click',()=>{
+        
+        let user=document.querySelector('#user').textContent.toString().trim();
+        let backLink=`/blogs/${user}`
+        window.location.replace(backLink);
+        
+    })
 
-    document.querySelector("#login-form").addEventListener('submit',handleSubmit)
+    document.querySelector("#postBlogForm").addEventListener('submit',handleSubmit)
 </script>
 
 <%- include('../templates/footer.ejs') %>

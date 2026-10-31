@@ -11,17 +11,21 @@
 
     <br/> 
 
-    <span>Click here to view blogs</span>
+    <span>Click here to view your blogs</span>
 
      <br/> 
 
    
-   
-    <a href="/blogs/<%= user %>">
-     <button id="view-blogs-btn" class="h-12 w-25 font-bold bg-green-700 text-stone-200 rounded-sm" >view blogs</button>
-   </a>
+   <div class="inline-flex items-center align-center">
+       <a href="/">
+      <button  class="h-12 w-25 font-bold bg-blue-700 text-stone-200 rounded-sm" >home</button>
+      </a>
+      <a href="/blogs/<%= user %>">
+      <button id="view-blogs-btn" class="h-12 w-25 mx-5 font-bold bg-green-700 text-stone-200 rounded-sm" >view blogs</button>
+      </a>
    </div>
 
-
+   </div>
+   
 </div>
 <%- include('../templates/footer.ejs') %>

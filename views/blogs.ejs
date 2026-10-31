@@ -2,7 +2,7 @@
 <div class="[height:700px] flex flex-col items-center justify-center" id="profile-page">
     <h1 class="text-3xl text-center font-extrabold "> <%= user %> 's blogs</h1>
 
-<div class="my-2" id="blogs">
+<div class="my-2 flex flex-col items-center justify-center" id="blogs">
     
     <% if (blogs.length!==0) { %>
     <% blogs.forEach ( (blog) => { %>
@@ -17,8 +17,11 @@
     <% } else {%>
         <div>No blogs found</div>
     <%}%>
-    <br>
-    <a  href="/blogs/<%= user %>/postblogs"> post a new blog</a>
+    <div class="inline-flex mt-10 justify-center items-center">
+         <a class="mr-10" href="/users/<%= user %>/profile">back to profile</a>
+         <a class="" href="/blogs/<%= user %>/postblogs"> post a new blog</a>
+    </div>
+  
     
 </div>
 </div>

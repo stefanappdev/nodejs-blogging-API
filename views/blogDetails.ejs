@@ -6,26 +6,170 @@
      
     <% if (blogs.length!==0) { %>
     <% blogs.forEach ( (blog) => { %>
-   <div>
-    <h2 class="font-bold text-lg"> Subject: <%= blog.blog_subject %> </h2>
+   <div id="blog-details">
+        <h2 id='blog_subject' class="font-bold text-lg"> Subject: <%= blog.blog_subject %> </h2>
+        <span >Posted by:</span>
+        <span id="user"> <%= blog.user %></span>
+        <span id='blog_id' class="hidden font-bold text-lg"> <%= blog.blog_id %> </span>
+        <br/>
+            
+        <div id="blog-content">
+         <span>body:</span>   
+         <%= blog.blog_content %>
+        </div>
+        <div id="blog-action-buttons"  class='w-5 my-2 inline-flex' >
+            <img id="delete-blog" class='h-10' alt="delete blog" src="/images/delete.svg">
+            <img id='edit-blog' class='ml-3 h-10' alt="edit blog" src="/images/edit.svg"/>
+        </div>
     
+        <br>
+        <a href="/blogs/<%= user %>">back to blogs</a>
+
+    </div>
+   
+
+     <form 
+    id="edit-form" 
+    class=
+    "bg-neutral-300 text-neutral-900
+     w-80 h-100 rounded-md text-lg
+     flex flex-col items-center px-3  hidden justify-center">
+
+     <h2 class='h-10 font-bold'>Edit your blog</h2>
+
+     <input class="hidden" type='text' name="edit_form_user" value="<%=user%>" />
+     <input class="hidden" type='text' name="edit_form_blog_id" value="<%=blog.blog_id%>" />
+
+    <label class=" h-10 font-bold" aria-labelledby="editted_blog_subject" for="editted_blog_subject">subject:</label>
+     <input 
+     aria-placeholder="Enter the subject of your blog" 
+     placeholder="Enter the subject of your blog" 
+     id="editted_blog_subject"
+     name="editted_blog_subject"
+     type="text"
+     value='<%= blog.blog_subject %>'
+     class="font-semibold  flex flex-wrap focus:bg-blue-100"
+     required
+     />
+
+    <br/>
+      <label class=" h-10 font-bold" aria-labelledby="editted_blog_content" for="editted_blog_content">edit your story:</label>
+     <textarea
+     id="editted_blog_content"
+     type="text"
+     name="editted_blog_content"
+     value='<%= blog.blog_content %>'
+     class="font-semibold border-4 border-stone-700 focus:bg-blue-100"
+     required
+     rows="4"
+     cols="25"
+     >
+     <%= blog.blog_content %>
+     </textarea>
+
     <br/>
     
-        <div id="">
-           <h3>body:</h3> 
-           
-           <div>
-                <%= blog.blog_content %>
-           </div>
-           <button>Edit blog</button>
-           <button>delete blog</button>
-        
-        </div>
-    <br>
-    <a href="/blogs/<%= user %>">back to blogs</a>
+      <div id="confirm-edit-btns-container" class="  inline-flex ">
+        <button id="confirm-edit-yes" class="h-12 w-20 font-bold bg-green-700 text-stone-200 rounded-sm mx-2" type="submit">edit</button>
+        <button id="confirm-edit-no" class="h-12 w-20 font-bold bg-red-700 text-stone-200 rounded-sm mx-2">cancel</button>
+     </div>
+
+    </form>
     
 </div>
 <% })%>
 <% }%>
+
+<script>
+
+    function deleteBlog(){
+        let blogIdentifiers=JSON.stringify({
+            blog_id:document.querySelector('#blog_id').textContent.toString().trim(),
+            user:document.querySelector('#user').textContent.toString().trim(),
+        })
+
+        let options={
+            method:'DELETE',
+            headers:{
+                'Content-Type':'application/json',
+                },
+            body:blogIdentifiers,
+        }
+
+        deleteBlogPost=async() => {
+                
+                await fetch(`/blogs/${user}/${blog_id}`,options)
+                .then(response=>response.json())
+                .then(data=>{
+                    if(data.status===200){
+                        alert(data.msg);
+                        window.location.replace(`/blogs/${user}`);
+                    }else if(data.status===404){
+                        alert(data.msg);
+                        window.location.replace(`/blogs/${user}`)
+                    }
+                })
+        }
+
+        deleteBlogPost()
+    }
+
+
+
+    function openBlogEditForm(){
+        document.querySelector('#blog-details').classList.add('hidden');
+        document.querySelector('#edit-form').classList.remove('hidden');
+        document.querySelector("#confirm-edit-no").addEventListener('click',closeBlogEditForm);
+        document.querySelector('#edit-form').addEventListener('submit',editBlog);
+    }
+     
+
+    function closeBlogEditForm(event){
+            event.preventDefault()
+            document.querySelector('#edit-form').classList.add('hidden');
+            document.querySelector('#blog-details').classList.remove('hidden')
+            return
+    }
+    
+    function editBlog(event){
+            event.preventDefault()
+    
+        let blogData=JSON.stringify({
+            blog_id:event.target.edit_form_blog_id.value,
+            user:event.target.edit_form_user.value,
+            blog_subject:event.target.editted_blog_subject.value,
+            blog_content:event.target.editted_blog_content.value,
+        })
+
+        let options={
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json',
+                },
+            body:blogData,
+        }
+
+        editBlogPost=async() => {
+                await fetch(`/blogs/${blogData.user}/${blogData.blog_id}`,options)
+                .then(response=>response.json())
+                .then(data=>{
+                    if(data.status===200){
+                        alert(data.msg);
+                        window.location.replace(`/blogs/${user}`);
+                    }else if(data.status===500){
+                        alert(data.msg);
+                        window.location.replace(`/blogs/${user}`)
+                    }
+                })
+        }
+
+        editBlogPost()
+    }
+
+document.querySelector('#edit-blog').addEventListener('click',openBlogEditForm);
+document.querySelector("#delete-blog").addEventListener('click',deleteBlog)
+</script>
+
+
 </div>
 <%- include('../templates/footer.ejs') %>
