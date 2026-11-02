@@ -4,7 +4,8 @@
 
    function handleLogout(event){
    event.preventDefault()
-   let user=""
+   let user="";
+   let sessionId='';
 
    function parseCookie(cookieName){
       let cookies=document.cookie.split('; ');
@@ -19,9 +20,12 @@
 
 
    if(document.cookie){
-      let sessionCookie=parseCookie("username")
-      let sessionDetails=JSON.parse(sessionCookie);
-      user=sessionDetails.username;
+      let sessionUserCookie=parseCookie("username");
+      let sessionIdCookie=parseCookie("sessionId")
+      let sessionUser=JSON.parse(sessionUserCookie);
+      let sessionId=JSON.parse(sessionIdCookie);
+      user=sessionUser;
+      sessionId=sessionId
    }else{
       alert('no user detected')
       return
@@ -46,7 +50,7 @@
          headers:{
             'Content-Type':'application/json',
          },
-         body:JSON.stringify({user:user})
+         body:JSON.stringify({user:user,sessionId:sessionId})
         }
 
         const deleteUserSession=async()=>{
@@ -54,7 +58,7 @@
             .then(response=>response.json())
             .then(data=>{
                 if(data.status===200){
-                  document.cookie="username=; max-age=0"
+                  document.cookie="username=; sessionId=; max-age=0"
                   alert(data.msg);
                   window.location.replace("/")
                }
