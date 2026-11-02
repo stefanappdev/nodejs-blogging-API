@@ -313,7 +313,7 @@ app.route('/sessions')
             }else{
                 
                 if(status===200){
-                     response.cookie('username',JSON.stringify({username}),cookieOptions)
+                     response.cookie('sessionCookie',JSON.stringify({username:username,sessionId:sessionId}),cookieOptions)
                     response.status(200).send({data:data,msg:"Login sucessful",status:200})
                    
                 }else if(status===401){
@@ -330,10 +330,11 @@ app.route('/sessions')
 
 .delete((request,response)=>{
     let user=request.params.username;
+    let sessionId=request.params.sessionId
     pool.getConnection((error,connection)=>{
         if(error){throw error};
         
-        connection.query('DELETE FROM sessions WHERE username = ?',[user],(error,data)=>{
+        connection.query('DELETE FROM sessions WHERE sessionId=? AND username= ?',[user,sessionId],(error,data)=>{
             connection.release();
             if(error){console.log(error)}
             response.status(200).send({data:data,msg:'Logout successful',status:200})
